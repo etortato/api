@@ -41,6 +41,13 @@ namespace api
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(x => x
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowAnyOrigin());
+
+            app.UseMiddleware<ExceptionMiddleware>();
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
