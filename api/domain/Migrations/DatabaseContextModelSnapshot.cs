@@ -114,15 +114,22 @@ namespace domain.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("domain.model.OrderDishes", b =>
+            modelBuilder.Entity("domain.model.OrderDish", b =>
                 {
+                    b.Property<int>("OrderDishId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<int>("DishId")
                         .HasColumnType("int");
 
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
-                    b.HasKey("DishId", "OrderId");
+                    b.HasKey("OrderDishId");
+
+                    b.HasIndex("DishId");
 
                     b.HasIndex("OrderId");
 
@@ -167,16 +174,16 @@ namespace domain.Migrations
                     b.Navigation("TimeOfDay");
                 });
 
-            modelBuilder.Entity("domain.model.OrderDishes", b =>
+            modelBuilder.Entity("domain.model.OrderDish", b =>
                 {
                     b.HasOne("domain.model.Dish", "Dish")
-                        .WithMany()
+                        .WithMany("Orders")
                         .HasForeignKey("DishId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("domain.model.Order", "Order")
-                        .WithMany()
+                        .WithMany("Dishes")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -184,6 +191,16 @@ namespace domain.Migrations
                     b.Navigation("Dish");
 
                     b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("domain.model.Dish", b =>
+                {
+                    b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("domain.model.Order", b =>
+                {
+                    b.Navigation("Dishes");
                 });
 #pragma warning restore 612, 618
         }

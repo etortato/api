@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace business.test
 {
     [TestClass]
-    public class UnitTest1
+    public class OrderBusinessTests
     {
         [TestMethod]
         public void TestMethod1()

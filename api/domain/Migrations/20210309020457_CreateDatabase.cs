@@ -2,7 +2,7 @@
 
 namespace domain.Migrations
 {
-    public partial class CreatingDatabase : Migration
+    public partial class CreateDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -57,12 +57,14 @@ namespace domain.Migrations
                 name: "OrderDishes",
                 columns: table => new
                 {
+                    OrderDishId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     OrderId = table.Column<int>(type: "int", nullable: false),
                     DishId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderDishes", x => new { x.DishId, x.OrderId });
+                    table.PrimaryKey("PK_OrderDishes", x => x.OrderDishId);
                     table.ForeignKey(
                         name: "FK_OrderDishes_Dishes_DishId",
                         column: x => x.DishId,
@@ -105,6 +107,11 @@ namespace domain.Migrations
                 name: "IX_Dishes_TimeOfDayId",
                 table: "Dishes",
                 column: "TimeOfDayId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderDishes_DishId",
+                table: "OrderDishes",
+                column: "DishId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderDishes_OrderId",

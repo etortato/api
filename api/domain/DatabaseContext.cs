@@ -14,13 +14,21 @@ namespace domain
         public DbSet<TimeOfDay> TimeOfDays { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Dish> Dishes { get; set; }
-        public DbSet<OrderDishes> OrderDishes { get; set; }
+        public DbSet<OrderDish> OrderDishes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Order>().HasKey(key => key.OrderId);
 
-            modelBuilder.Entity<OrderDishes>().HasKey(key => new { key.DishId, key.OrderId });
+            modelBuilder.Entity<OrderDish>().HasKey(key => key.OrderDishId);
+            modelBuilder.Entity<OrderDish>()
+                .HasOne(od => od.Order)
+                .WithMany(o => o.Dishes)
+                .HasForeignKey(od => od.OrderId);
+            modelBuilder.Entity<OrderDish>()
+                .HasOne(od => od.Dish)
+                .WithMany(d => d.Orders)
+                .HasForeignKey(od => od.DishId);
 
             modelBuilder.Entity<TimeOfDay>().HasKey(key => key.TimeOfDayId);
             modelBuilder.Entity<TimeOfDay>().HasData(
@@ -40,7 +48,7 @@ namespace domain
                 new Dish { DishId = 5, Number = 2, TimeOfDayId = 2, Name = "potato", CanHaveMultiple = true },
                 new Dish { DishId = 6, Number = 3, TimeOfDayId = 2, Name = "wine", CanHaveMultiple = false },
                 new Dish { DishId = 7, Number = 4, TimeOfDayId = 2, Name = "cake", CanHaveMultiple = false }
-                #endregion
+            #endregion
             );
         }
     }

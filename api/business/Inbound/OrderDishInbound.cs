@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace domain.model
+namespace business.Inbound
 {
-    public class OrderDishes
+    public class OrderDishInbound
     {
         public int OrderId { get; set; }
-        public Order Order { get; set; }
         public int DishId { get; set; }
-        public Dish Dish { get; set; }
     }
 }
